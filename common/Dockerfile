@@ -5,7 +5,7 @@ ENV LANG C.UTF-8
 ARG BUILD_VERSION
 ARG REPO_OWNER=fangzheli
 
-RUN apk add --no-cache socat tini nodejs eudev && \
+RUN apk add --no-cache socat tini 'nodejs>=24.22.1' eudev && \
     # Validation to confirm that curl is installed in the base image.
     curl --version || (echo "curl missing" && exit 1)
 
