@@ -3,7 +3,7 @@ FROM $BUILD_FROM as base
 
 ENV LANG C.UTF-8
 ARG BUILD_VERSION
-ARG REPO_OWNER=fangzheli
+ARG REPO_OWNER=pine64
 
 RUN apk add --no-cache socat tini 'nodejs>=24.22.1' eudev && \
     # Validation to confirm that curl is installed in the base image.
@@ -11,15 +11,15 @@ RUN apk add --no-cache socat tini 'nodejs>=24.22.1' eudev && \
 
 # Dependencies and build
 FROM base as dependencies_and_build
-ARG REPO_OWNER=fangzheli
+ARG REPO_OWNER=pine64
 
 RUN apk add --no-cache --virtual .buildtools npm make gcc g++ linux-headers udev git python3 && \
-    npm install -g pnpm@10.12.1 && \
     # Both edge and stable use the BLZ fork of zigbee-herdsman
     echo "Installing BLZ zigbee-herdsman" && \
     git clone -b feat/blz --single-branch --depth 1 \
         https://github.com/${REPO_OWNER}/zigbee-herdsman.git /zigbee-herdsman && \
     cd /zigbee-herdsman && \
+    npm install -g $(jq -r '.packageManager' package.json) && \
     pnpm install && \
     pnpm run build && \
     cd / && \
