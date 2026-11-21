@@ -12,8 +12,7 @@ RUN apk add --no-cache socat tini 'nodejs>=24.22.1' eudev && \
 # Dependencies and build
 FROM base as dependencies_and_build
 ARG REPO_OWNER=pine64
-# pine64/zigbee-herdsman is private; fangzheli/zigbee-herdsman mirrors the same feat/blz branch publicly
-ARG HERDSMAN_OWNER=fangzheli
+ARG HERDSMAN_OWNER=pine64
 
 RUN apk add --no-cache --virtual .buildtools npm make gcc g++ linux-headers udev git python3 && \
     # Both edge and stable use the BLZ fork of zigbee-herdsman
